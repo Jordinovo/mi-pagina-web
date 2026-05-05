@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Inici de sessió</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body class="login-body">
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <span class="logo">NetSys</span>
+        </div>
+        <div class="top-bar-right">
+
+            <div class="lang-select">
+                <button class="lang-switch" type="button" id="langToggle">CAT</button>
+                <div class="lang-options" id="langOptions">
+                    <button class="lang-option active" data-lang="ca">Català</button>
+                    <button class="lang-option" data-lang="es">Español</button>
+                    <button class="lang-option" data-lang="en">English</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="login-container">
+        <section class="login-box">
+            <h1
+                data-ca="Inici de sessió"
+                data-es="Inicio de sesión"
+                data-en="Log in"
+            >
+                Inici de sessió
+            </h1>
+            <p class="login-subtitle"
+                data-ca="Introdueix un nom d'usuari i una contrasenya per accedir."
+                data-es="Introduce un nombre de usuario y una contraseña para acceder."
+                data-en="Enter a username and password to access."
+            >
+                Introdueix un nom d'usuari i una contrasenya per accedir.
+            </p>
+
+            <form class="login-form" onsubmit="return entrar();">
+                <div class="form-group">
+                    <label for="usuari"
+                        data-ca="Usuari"
+                        data-es="Usuario"
+                        data-en="User"
+                    >
+                        Usuari
+                    </label>
+                    <input type="text" id="usuari" name="usuari" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasenya"
+                        data-ca="Contrasenya"
+                        data-es="Contraseña"
+                        data-en="Password"
+                    >
+                        Contrasenya
+                    </label>
+                    <input type="password" id="contrasenya" name="contrasenya" required>
+                </div>
+
+                <button type="submit" class="btn-primary"
+                    data-ca="Entrar"
+                    data-es="Entrar"
+                    data-en="Log in"
+                >
+                    Entrar
+                </button>
+            </form>
+
+            <p class="login-note"
+                data-ca="Pots posar qualsevol usuari i contrasenya, només és una prova."
+                data-es="Puedes poner cualquier usuario y contraseña, solo es una prueba."
+                data-en="You can use any username and password, this is just a demo."
+            >
+                Pots posar qualsevol usuari i contrasenya, només és una prova.
+            </p>
+        </section>
+    </main>
+
+    <script>
+
+        function entrar() {
+            window.location.href = "INICIO.html";
+            return false;
+        }
+
+
+        function aplicarIdioma(idioma) {
+            document.documentElement.lang = idioma;
+            
+
+            document.getElementById('langToggle').textContent = 
+                idioma === 'ca' ? 'CAT' : 
+                idioma === 'es' ? 'ES' : 'EN';
+            
+
+            document.querySelectorAll('.lang-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === idioma);
+            });
+            
+
+            document.querySelectorAll('[data-ca]').forEach(el => {
+                el.textContent = el.dataset.ca;
+            });
+            
+            if (idioma === 'es') {
+                document.querySelectorAll('[data-es]').forEach(el => {
+                    el.textContent = el.dataset.es;
+                });
+            } else if (idioma === 'en') {
+                document.querySelectorAll('[data-en]').forEach(el => {
+                    el.textContent = el.dataset.en;
+                });
+            }
+        }
+
+        function initIdioma() {
+            const idiomaGuardat = localStorage.getItem('idiomaNetSys') || 'ca';
+            aplicarIdioma(idiomaGuardat);
+        }
+
+
+        document.getElementById('langToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('langOptions').classList.toggle('show');
+        });
+
+
+        document.querySelectorAll('.lang-option').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const lang = this.dataset.lang;
+                localStorage.setItem('idiomaNetSys', lang);
+                aplicarIdioma(lang);
+                document.getElementById('langOptions').classList.remove('show');
+            });
+        });
+
+
+        document.addEventListener('click', () => {
+            document.getElementById('langOptions').classList.remove('show');
+        });
+
+
+        initIdioma();
+    </script>
+</body>
+</html>
